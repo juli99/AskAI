@@ -10,7 +10,7 @@ import { translateError } from "../utils/errors";
 export default function LoginPage() {
   const navigate = useNavigate();
   const { setSession } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -82,6 +82,8 @@ export default function LoginPage() {
 
         <div className="flex justify-center">
           <GoogleLogin
+            key={i18n.language}
+            locale={i18n.language === "he" ? "iw" : "en"}
             onSuccess={async (cred) => {
               if (!cred.credential) return;
               try {
