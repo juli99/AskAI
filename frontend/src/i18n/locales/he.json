@@ -1,0 +1,62 @@
+{
+  "common": {
+    "appName": "AskAI",
+    "or": "או"
+  },
+  "language": {
+    "label": "שפה",
+    "hebrew": "עברית",
+    "english": "English"
+  },
+  "auth": {
+    "login": {
+      "title": "התחברות ל-AskAI",
+      "email": "אימייל",
+      "password": "סיסמה",
+      "submit": "התחבר",
+      "submitting": "מתחבר…",
+      "noAccount": "אין לך חשבון?",
+      "signupLink": "הירשם"
+    },
+    "register": {
+      "title": "הרשמה ל-AskAI",
+      "displayName": "שם תצוגה",
+      "email": "אימייל",
+      "passwordHint": "סיסמה (לפחות 6 תווים)",
+      "submit": "הירשם",
+      "submitting": "נרשם…",
+      "haveAccount": "כבר יש לך חשבון?",
+      "loginLink": "התחבר"
+    }
+  },
+  "chat": {
+    "newConversation": "שיחה חדשה",
+    "newConversationButton": "+ שיחה חדשה",
+    "delete": "מחק",
+    "noConversations": "אין שיחות עדיין",
+    "logout": "יציאה",
+    "emptyState": "צור שיחה חדשה או בחר שיחה קיימת מהרשימה",
+    "loading": "טוען…",
+    "aiThinking": "AI חושב…",
+    "inputPlaceholder": "כתוב הודעה… (Enter לשליחה, Shift+Enter לשורה חדשה)",
+    "send": "שלח"
+  },
+  "errors": {
+    "loginFailed": "ההתחברות נכשלה",
+    "googleLoginFailed": "התחברות Google נכשלה",
+    "registerFailed": "ההרשמה נכשלה",
+    "invalidCredentials": "אימייל או סיסמה שגויים",
+    "emailAlreadyRegistered": "האימייל הזה כבר רשום במערכת",
+    "invalidGoogleToken": "טוקן Google לא תקין",
+    "conversationNotFound": "השיחה לא נמצאה",
+    "invalidId": "מזהה לא תקין",
+    "aiProviderError": "שגיאה בשירות ה-AI: {{detail}}",
+    "sendMessageFailed": "שליחת ההודעה נכשלה",
+    "loadConversationsFailed": "טעינת השיחות נכשלה",
+    "loadMessagesFailed": "טעינת ההודעות נכשלה",
+    "deleteConversationFailed": "מחיקת השיחה נכשלה",
+    "networkError": "בעיית רשת - בדוק את החיבור",
+    "unknownError": "שגיאה לא צפויה",
+    "unauthorized": "אין הרשאה - יש להתחבר מחדש"
+  }
+}

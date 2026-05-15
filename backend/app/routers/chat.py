@@ -45,7 +45,7 @@ async def create_conversation(
     user: dict = Depends(get_current_user), db: AsyncIOMotorDatabase = Depends(get_db)
 ) -> ConversationPublic:
     now = datetime.now(timezone.utc)
-    doc = {"user_id": user["_id"], "title": "שיחה חדשה", "created_at": now, "updated_at": now}
+    doc = {"user_id": user["_id"], "title": "", "created_at": now, "updated_at": now}
     result = await db.conversations.insert_one(doc)
     doc["_id"] = result.inserted_id
     return ConversationPublic.from_db(doc)
@@ -110,8 +110,8 @@ async def send_message(
     assistant_doc["_id"] = assistant_result.inserted_id
 
     new_title = conv["title"]
-    if conv["title"] == "שיחה חדשה":
-        new_title = payload.content[:40].strip() or "שיחה חדשה"
+    if not conv["title"]:
+        new_title = payload.content[:40].strip()
     await db.conversations.update_one(
         {"_id": conv["_id"]},
         {"$set": {"updated_at": assistant_doc["created_at"], "title": new_title}},

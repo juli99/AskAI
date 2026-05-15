@@ -1,0 +1,62 @@
+{
+  "common": {
+    "appName": "AskAI",
+    "or": "or"
+  },
+  "language": {
+    "label": "Language",
+    "hebrew": "עברית",
+    "english": "English"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to AskAI",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Sign up"
+    },
+    "register": {
+      "title": "Sign up to AskAI",
+      "displayName": "Display name",
+      "email": "Email",
+      "passwordHint": "Password (at least 6 characters)",
+      "submit": "Sign up",
+      "submitting": "Signing up…",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Sign in"
+    }
+  },
+  "chat": {
+    "newConversation": "New chat",
+    "newConversationButton": "+ New chat",
+    "delete": "Delete",
+    "noConversations": "No conversations yet",
+    "logout": "Logout",
+    "emptyState": "Create a new chat or pick an existing one from the list",
+    "loading": "Loading…",
+    "aiThinking": "AI is thinking…",
+    "inputPlaceholder": "Type a message… (Enter to send, Shift+Enter for new line)",
+    "send": "Send"
+  },
+  "errors": {
+    "loginFailed": "Sign in failed",
+    "googleLoginFailed": "Google sign in failed",
+    "registerFailed": "Sign up failed",
+    "invalidCredentials": "Invalid email or password",
+    "emailAlreadyRegistered": "This email is already registered",
+    "invalidGoogleToken": "Invalid Google token",
+    "conversationNotFound": "Conversation not found",
+    "invalidId": "Invalid id",
+    "aiProviderError": "AI service error: {{detail}}",
+    "sendMessageFailed": "Failed to send message",
+    "loadConversationsFailed": "Failed to load conversations",
+    "loadMessagesFailed": "Failed to load messages",
+    "deleteConversationFailed": "Failed to delete conversation",
+    "networkError": "Network error - check your connection",
+    "unknownError": "Unexpected error",
+    "unauthorized": "Unauthorized - please sign in again"
+  }
+}

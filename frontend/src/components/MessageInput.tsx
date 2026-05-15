@@ -1,4 +1,5 @@
 import { KeyboardEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   onSend: (content: string) => void;
@@ -6,6 +7,7 @@ type Props = {
 };
 
 export default function MessageInput({ onSend, disabled }: Props) {
+  const { t } = useTranslation();
   const [text, setText] = useState("");
 
   const submit = () => {
@@ -30,7 +32,7 @@ export default function MessageInput({ onSend, disabled }: Props) {
           onChange={(e) => setText(e.target.value)}
           onKeyDown={onKeyDown}
           rows={1}
-          placeholder="כתוב הודעה… (Enter לשליחה, Shift+Enter לשורה חדשה)"
+          placeholder={t("chat.inputPlaceholder")}
           className="flex-1 resize-none rounded-xl border border-slate-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none"
         />
         <button
@@ -38,7 +40,7 @@ export default function MessageInput({ onSend, disabled }: Props) {
           disabled={disabled || !text.trim()}
           className="rounded-xl bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
         >
-          שלח
+          {t("chat.send")}
         </button>
       </div>
     </div>

@@ -1,11 +1,15 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { register } from "../api/auth";
 import { useAuth } from "../store/auth";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import { translateError } from "../utils/errors";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
   const { setSession } = useAuth();
+  const { t } = useTranslation();
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,20 +24,26 @@ export default function RegisterPage() {
       const auth = await register(email, password, displayName);
       setSession(auth);
       navigate("/chat", { replace: true });
-    } catch (err: any) {
-      setError(err?.response?.data?.detail ?? "ההרשמה נכשלה");
+    } catch (err) {
+      setError(translateError(err, t, "errors.registerFailed"));
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="flex min-h-full items-center justify-center p-6">
+    <div className="relative flex min-h-full items-center justify-center p-6">
+      <div className="absolute top-4 ltr:right-4 rtl:left-4">
+        <LanguageSwitcher />
+      </div>
+
       <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-2xl font-semibold">הרשמה ל-AskAI</h1>
+        <h1 className="mb-6 text-2xl font-semibold">{t("auth.register.title")}</h1>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">שם תצוגה</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              {t("auth.register.displayName")}
+            </label>
             <input
               type="text"
               required
@@ -45,7 +55,9 @@ export default function RegisterPage() {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">אימייל</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              {t("auth.register.email")}
+            </label>
             <input
               type="email"
               required
@@ -55,7 +67,9 @@ export default function RegisterPage() {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">סיסמה (לפחות 6 תווים)</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              {t("auth.register.passwordHint")}
+            </label>
             <input
               type="password"
               required
@@ -71,13 +85,13 @@ export default function RegisterPage() {
             disabled={submitting}
             className="w-full rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
           >
-            {submitting ? "נרשם…" : "הירשם"}
+            {submitting ? t("auth.register.submitting") : t("auth.register.submit")}
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-slate-600">
-          כבר יש לך חשבון?{" "}
+          {t("auth.register.haveAccount")}{" "}
           <Link to="/login" className="text-blue-600 hover:underline">
-            התחבר
+            {t("auth.register.loginLink")}
           </Link>
         </p>
       </div>
