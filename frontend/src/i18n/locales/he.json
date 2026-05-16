@@ -27,6 +27,17 @@
     "underlineLinks": "קו תחתון לקישורים",
     "reset": "איפוס הגדרות נגישות"
   },
+  "verify": {
+    "title": "אימות אימייל",
+    "subtitle": "שלחנו קוד אימות בן 6 ספרות ל-{{email}}. הזן אותו כאן כדי להמשיך.",
+    "codeLabel": "קוד אימות",
+    "submit": "אמת",
+    "submitting": "מאמת…",
+    "resend": "שלח קוד חדש",
+    "resending": "שולח…",
+    "resentInfo": "קוד חדש נשלח. בדוק את תיבת הדואר.",
+    "signOut": "התנתק"
+  },
   "auth": {
     "login": {
       "title": "התחברות ל-AskAI",
@@ -84,6 +95,16 @@
     "deleteConversationFailed": "מחיקת השיחה נכשלה",
     "networkError": "בעיית רשת - בדוק את החיבור",
     "unknownError": "שגיאה לא צפויה",
-    "unauthorized": "אין הרשאה - יש להתחבר מחדש"
+    "unauthorized": "אין הרשאה - יש להתחבר מחדש",
+    "verifyFailed": "האימות נכשל",
+    "resendFailed": "שליחת קוד מחדש נכשלה",
+    "emailNotVerified": "המייל לא אומת",
+    "emailAlreadyVerified": "המייל כבר אומת",
+    "verifyNoActiveCode": "אין קוד אימות פעיל. בקש קוד חדש.",
+    "verifyExpired": "קוד האימות פג תוקף. בקש קוד חדש.",
+    "verifyTooManyAttempts": "יותר מדי ניסיונות. בקש קוד חדש.",
+    "verifyWrongCode": "קוד אימות שגוי",
+    "verifyEmailSendFailed": "שליחת מייל האימות נכשלה",
+    "emailServiceUnavailable": "שירות המייל לא מוגדר בשרת"
   }
 }

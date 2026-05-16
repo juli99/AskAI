@@ -27,6 +27,17 @@
     "underlineLinks": "Underline links",
     "reset": "Reset accessibility settings"
   },
+  "verify": {
+    "title": "Verify your email",
+    "subtitle": "We sent a 6-digit code to {{email}}. Enter it here to continue.",
+    "codeLabel": "Verification code",
+    "submit": "Verify",
+    "submitting": "Verifying…",
+    "resend": "Send a new code",
+    "resending": "Sending…",
+    "resentInfo": "A new code was sent. Check your inbox.",
+    "signOut": "Sign out"
+  },
   "auth": {
     "login": {
       "title": "Sign in to AskAI",
@@ -84,6 +95,16 @@
     "deleteConversationFailed": "Failed to delete conversation",
     "networkError": "Network error - check your connection",
     "unknownError": "Unexpected error",
-    "unauthorized": "Unauthorized - please sign in again"
+    "unauthorized": "Unauthorized - please sign in again",
+    "verifyFailed": "Verification failed",
+    "resendFailed": "Resending the code failed",
+    "emailNotVerified": "Email not verified",
+    "emailAlreadyVerified": "Email already verified",
+    "verifyNoActiveCode": "No active verification code. Request a new one.",
+    "verifyExpired": "Verification code expired. Request a new one.",
+    "verifyTooManyAttempts": "Too many attempts. Request a new code.",
+    "verifyWrongCode": "Incorrect verification code",
+    "verifyEmailSendFailed": "Failed to send the verification email",
+    "emailServiceUnavailable": "Email service is not configured on the server"
   }
 }

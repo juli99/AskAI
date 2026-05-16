@@ -22,7 +22,7 @@ export default function LoginPage() {
     try {
       const auth = await login(email, password);
       setSession(auth);
-      navigate("/chat", { replace: true });
+      navigate(auth.user.is_email_verified ? "/chat" : "/verify-email", { replace: true });
     } catch (err) {
       setError(translateError(err, t, "errors.loginFailed"));
     } finally {
@@ -86,7 +86,7 @@ export default function LoginPage() {
                 try {
                   const auth = await loginWithGoogle(cred.credential);
                   setSession(auth);
-                  navigate("/chat", { replace: true });
+                  navigate(auth.user.is_email_verified ? "/chat" : "/verify-email", { replace: true });
                 } catch (err) {
                   setError(translateError(err, t, "errors.googleLoginFailed"));
                 }

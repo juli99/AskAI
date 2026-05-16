@@ -8,7 +8,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from app.config import settings
 from app.db import get_db
-from app.deps import get_current_user
+from app.deps import get_verified_user
 from app.models.conversation import ConversationPublic
 from app.models.message import MessagePublic
 from app.schemas.chat import RegenerateResponse, SendMessageRequest, SendMessageResponse
@@ -36,7 +36,7 @@ async def _load_conversation(
 @router.get("/conversations", response_model=list[ConversationPublic])
 async def list_conversations(
     q: str | None = Query(default=None, max_length=200),
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(get_verified_user),
     db: AsyncIOMotorDatabase = Depends(get_db),
 ) -> list[ConversationPublic]:
     base_filter: dict = {"user_id": user["_id"]}
@@ -69,7 +69,7 @@ async def list_conversations(
 
 @router.post("/conversations", response_model=ConversationPublic, status_code=status.HTTP_201_CREATED)
 async def create_conversation(
-    user: dict = Depends(get_current_user), db: AsyncIOMotorDatabase = Depends(get_db)
+    user: dict = Depends(get_verified_user), db: AsyncIOMotorDatabase = Depends(get_db)
 ) -> ConversationPublic:
     now = datetime.now(timezone.utc)
     doc = {"user_id": user["_id"], "title": "", "created_at": now, "updated_at": now}
@@ -81,7 +81,7 @@ async def create_conversation(
 @router.get("/conversations/{conversation_id}/messages", response_model=list[MessagePublic])
 async def list_messages(
     conversation_id: str,
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(get_verified_user),
     db: AsyncIOMotorDatabase = Depends(get_db),
 ) -> list[MessagePublic]:
     await _load_conversation(db, conversation_id, user["_id"])
@@ -97,7 +97,7 @@ async def list_messages(
 async def send_message(
     conversation_id: str,
     payload: SendMessageRequest,
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(get_verified_user),
     db: AsyncIOMotorDatabase = Depends(get_db),
 ) -> SendMessageResponse:
     conv = await _load_conversation(db, conversation_id, user["_id"])
@@ -160,7 +160,7 @@ async def send_message(
 )
 async def regenerate_last_response(
     conversation_id: str,
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(get_verified_user),
     db: AsyncIOMotorDatabase = Depends(get_db),
 ) -> RegenerateResponse:
     conv = await _load_conversation(db, conversation_id, user["_id"])
@@ -220,7 +220,7 @@ async def regenerate_last_response(
 @router.delete("/conversations/{conversation_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_conversation(
     conversation_id: str,
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(get_verified_user),
     db: AsyncIOMotorDatabase = Depends(get_db),
 ) -> None:
     conv = await _load_conversation(db, conversation_id, user["_id"])

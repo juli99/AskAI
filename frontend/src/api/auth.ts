@@ -24,3 +24,12 @@ export async function fetchMe(): Promise<User> {
   const { data } = await api.get<User>("/users/me");
   return data;
 }
+
+export async function verifyEmail(code: string): Promise<{ user: User }> {
+  const { data } = await api.post<{ user: User }>("/auth/verify-email", { code });
+  return data;
+}
+
+export async function resendVerification(): Promise<void> {
+  await api.post("/auth/resend-verification");
+}

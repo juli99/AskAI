@@ -6,6 +6,14 @@ const BACKEND_ERROR_MAP: Record<string, string> = {
   "Invalid Google token": "errors.invalidGoogleToken",
   "Conversation not found": "errors.conversationNotFound",
   "Invalid id": "errors.invalidId",
+  "Email not verified": "errors.emailNotVerified",
+  "Email already verified": "errors.emailAlreadyVerified",
+  "No active verification code. Please request a new one.": "errors.verifyNoActiveCode",
+  "Verification code expired. Please request a new one.": "errors.verifyExpired",
+  "Too many attempts. Please request a new code.": "errors.verifyTooManyAttempts",
+  "Incorrect verification code": "errors.verifyWrongCode",
+  "Failed to send verification email": "errors.verifyEmailSendFailed",
+  "Email service is not configured on the server": "errors.emailServiceUnavailable",
 };
 
 export function translateError(

@@ -22,7 +22,7 @@ export default function RegisterPage() {
     try {
       const auth = await register(email, password, displayName);
       setSession(auth);
-      navigate("/chat", { replace: true });
+      navigate(auth.user.is_email_verified ? "/chat" : "/verify-email", { replace: true });
     } catch (err) {
       setError(translateError(err, t, "errors.registerFailed"));
     } finally {

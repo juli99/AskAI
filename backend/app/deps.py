@@ -36,3 +36,12 @@ async def get_current_user(
         raise credentials_error
 
     return user
+
+
+async def get_verified_user(user: dict = Depends(get_current_user)) -> dict:
+    if not user.get("is_email_verified"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Email not verified",
+        )
+    return user

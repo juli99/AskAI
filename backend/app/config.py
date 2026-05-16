@@ -18,5 +18,13 @@ class Settings(BaseSettings):
 
     frontend_origin: str = "http://localhost:5173"
 
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from_name: str = "AskAI"
+    verification_code_ttl_minutes: int = 15
+    verification_max_attempts: int = 5
+
 
 settings = Settings()

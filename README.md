@@ -34,6 +34,7 @@ copy .env.example .env
 - `JWT_SECRET` - מחרוזת אקראית חזקה (32+ תווים)
 - `GEMINI_API_KEY` - מ-Google AI Studio
 - `GOOGLE_CLIENT_ID` - אופציונלי (רק אם רוצים Google login)
+- `SMTP_USER` + `SMTP_PASSWORD` - לאימות אימייל בהרשמה (ראה למטה)
 
 ### 2. Frontend
 
@@ -51,6 +52,20 @@ copy .env.example .env.local
 1. [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → צור OAuth Client ID (Web)
 2. הוסף `http://localhost:5173` ל-Authorized JavaScript origins
 3. העתק את ה-Client ID לשני קבצי ה-env
+
+### 4. Gmail SMTP לאימות אימייל (חינם)
+
+נדרש כדי לשלוח קודי אימות בהרשמה. חינמי לחלוטין (500 מיילים ביום).
+
+1. **הפעל אימות דו-שלבי** בחשבון Google שלך: https://myaccount.google.com/security
+2. **צור App Password:** https://myaccount.google.com/apppasswords → בחר "Mail" → העתק את 16 התווים שנוצרו (בלי רווחים)
+3. עדכן ב-`backend\.env`:
+   ```
+   SMTP_USER=your-gmail@gmail.com
+   SMTP_PASSWORD=xxxxxxxxxxxxxxxx
+   ```
+
+אם תחצה את התקרה (500/יום) ה-Gmail ייחסם זמנית לשליחה — לא יחויב כסף.
 
 ## Run
 

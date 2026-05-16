@@ -22,3 +22,11 @@ class AuthResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserPublic
+
+
+class VerifyEmailRequest(BaseModel):
+    code: str = Field(min_length=4, max_length=10)
+
+
+class VerifyEmailResponse(BaseModel):
+    user: UserPublic

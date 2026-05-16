@@ -2,6 +2,7 @@ export type User = {
   id: string;
   email: string;
   display_name: string;
+  is_email_verified: boolean;
 };
 
 export type AuthResponse = {
