@@ -8,7 +8,9 @@ export default function MessageBubble({ message }: { message: Message }) {
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
         className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
-          isUser ? "bg-blue-600 text-white" : "bg-white text-slate-900 border border-slate-200"
+          isUser
+            ? "bg-blue-600 text-white"
+            : "bg-white text-slate-900 border border-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700"
         }`}
       >
         {isUser ? (

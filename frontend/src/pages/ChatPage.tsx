@@ -10,7 +10,6 @@ import {
 } from "../api/chat";
 import MessageBubble from "../components/MessageBubble";
 import MessageInput from "../components/MessageInput";
-import LanguageSwitcher from "../components/LanguageSwitcher";
 import { useAuth } from "../store/auth";
 import type { Conversation, Message } from "../types";
 
@@ -88,8 +87,8 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-full">
-      <aside className="flex w-64 flex-col border-slate-200 bg-white ltr:border-r rtl:border-l">
-        <div className="border-b border-slate-200 p-4">
+      <aside className="flex w-64 flex-col border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 ltr:border-r rtl:border-l">
+        <div className="border-b border-slate-200 p-4 dark:border-slate-700">
           <button
             onClick={() => newConv.mutate()}
             className="w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -101,19 +100,21 @@ export default function ChatPage() {
           {conversationsQuery.data?.map((c) => (
             <div
               key={c.id}
-              className={`group flex items-center justify-between gap-2 border-b border-slate-100 px-3 py-3 text-sm ${
-                c.id === activeId ? "bg-slate-100" : "hover:bg-slate-50"
+              className={`group flex items-center justify-between gap-2 border-b border-slate-100 px-3 py-3 text-sm dark:border-slate-800 ${
+                c.id === activeId
+                  ? "bg-slate-100 dark:bg-slate-800"
+                  : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
               }`}
             >
               <button
                 onClick={() => setActiveId(c.id)}
-                className="flex-1 truncate text-start"
+                className="flex-1 truncate text-start text-slate-800 dark:text-slate-200"
               >
                 {displayTitle(c)}
               </button>
               <button
                 onClick={() => removeConv.mutate(c.id)}
-                className="hidden text-xs text-red-500 hover:text-red-700 group-hover:block"
+                className="hidden text-xs text-red-500 hover:text-red-700 group-hover:block dark:text-red-400 dark:hover:text-red-300"
                 title={t("chat.delete")}
               >
                 {t("chat.delete")}
@@ -121,40 +122,35 @@ export default function ChatPage() {
             </div>
           ))}
           {conversationsQuery.data?.length === 0 && (
-            <div className="p-4 text-center text-xs text-slate-400">
+            <div className="p-4 text-center text-xs text-slate-400 dark:text-slate-500">
               {t("chat.noConversations")}
             </div>
           )}
         </div>
-        <div className="border-t border-slate-200 p-3 text-xs text-slate-500">
+        <div className="border-t border-slate-200 p-3 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400">
           <div className="mb-2 truncate">
             {user?.display_name} ({user?.email})
           </div>
-          <button onClick={logout} className="text-blue-600 hover:underline">
+          <button onClick={logout} className="text-blue-600 hover:underline dark:text-blue-400">
             {t("chat.logout")}
           </button>
         </div>
       </aside>
 
-      <main className="flex flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-3">
-          <span className="text-sm font-medium text-slate-700">{t("common.appName")}</span>
-          <LanguageSwitcher />
-        </header>
-
+      <main className="flex flex-1 flex-col bg-slate-50 dark:bg-slate-950">
         <div className="flex-1 space-y-3 overflow-y-auto p-6">
           {!activeId && (
-            <div className="flex h-full items-center justify-center text-slate-400">
+            <div className="flex h-full items-center justify-center text-slate-400 dark:text-slate-500">
               {t("chat.emptyState")}
             </div>
           )}
           {activeId && messagesQuery.isLoading && (
-            <div className="text-center text-slate-400">{t("chat.loading")}</div>
+            <div className="text-center text-slate-400 dark:text-slate-500">{t("chat.loading")}</div>
           )}
           {activeId &&
             messagesQuery.data?.map((m) => <MessageBubble key={m.id} message={m} />)}
           {send.isPending && (
-            <div className="text-sm text-slate-400">{t("chat.aiThinking")}</div>
+            <div className="text-sm text-slate-400 dark:text-slate-500">{t("chat.aiThinking")}</div>
           )}
           <div ref={endRef} />
         </div>

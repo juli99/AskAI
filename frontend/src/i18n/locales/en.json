@@ -8,6 +8,10 @@
     "hebrew": "עברית",
     "english": "English"
   },
+  "theme": {
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
+  },
   "auth": {
     "login": {
       "title": "Sign in to AskAI",

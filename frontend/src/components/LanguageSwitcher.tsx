@@ -34,7 +34,7 @@ export default function LanguageSwitcher({ className = "" }: { className?: strin
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t("language.label")}
-        className="inline-flex items-center gap-1 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 focus:border-blue-500 focus:outline-none"
+        className="inline-flex items-center gap-1 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 focus:border-blue-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
       >
         <span>{LABEL[active]}</span>
         <svg
@@ -50,7 +50,7 @@ export default function LanguageSwitcher({ className = "" }: { className?: strin
       {open && (
         <ul
           role="listbox"
-          className="absolute z-20 mt-1 min-w-[7rem] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg ltr:right-0 rtl:left-0"
+          className="absolute z-20 mt-1 min-w-[7rem] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800 ltr:right-0 rtl:left-0"
         >
           {SUPPORTED_LANGUAGES.map((lang) => {
             const selected = lang === active;
@@ -59,8 +59,8 @@ export default function LanguageSwitcher({ className = "" }: { className?: strin
                 <button
                   type="button"
                   onClick={() => handlePick(lang)}
-                  className={`flex w-full items-center justify-between gap-3 px-3 py-2 text-sm hover:bg-slate-50 ${
-                    selected ? "font-medium text-blue-600" : "text-slate-700"
+                  className={`flex w-full items-center justify-between gap-3 px-3 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-700 ${
+                    selected ? "font-medium text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-200"
                   }`}
                 >
                   <span>{LABEL[lang]}</span>

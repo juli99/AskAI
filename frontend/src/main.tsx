@@ -6,6 +6,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
 import App from "./App";
 import { AuthProvider } from "./store/auth";
+import { ThemeProvider } from "./store/theme";
 import "./i18n";
 import "./index.css";
 
@@ -23,14 +24,16 @@ function GoogleProvider({ children }: { children: React.ReactNode }) {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <GoogleProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AuthProvider>
-            <App />
-          </AuthProvider>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </GoogleProvider>
+    <ThemeProvider>
+      <GoogleProvider>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <AuthProvider>
+              <App />
+            </AuthProvider>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </GoogleProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
