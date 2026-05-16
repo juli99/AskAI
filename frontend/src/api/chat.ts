@@ -17,10 +17,15 @@ export async function listMessages(conversationId: string): Promise<Message[]> {
   return data;
 }
 
-export async function sendMessage(conversationId: string, content: string): Promise<SendMessageResponse> {
+export async function sendMessage(
+  conversationId: string,
+  content: string,
+  signal?: AbortSignal
+): Promise<SendMessageResponse> {
   const { data } = await api.post<SendMessageResponse>(
     `/chat/conversations/${conversationId}/messages`,
-    { content }
+    { content },
+    { signal }
   );
   return data;
 }
@@ -29,9 +34,14 @@ export async function deleteConversation(conversationId: string): Promise<void> 
   await api.delete(`/chat/conversations/${conversationId}`);
 }
 
-export async function regenerateLastResponse(conversationId: string): Promise<RegenerateResponse> {
+export async function regenerateLastResponse(
+  conversationId: string,
+  signal?: AbortSignal
+): Promise<RegenerateResponse> {
   const { data } = await api.post<RegenerateResponse>(
-    `/chat/conversations/${conversationId}/regenerate`
+    `/chat/conversations/${conversationId}/regenerate`,
+    undefined,
+    { signal }
   );
   return data;
 }

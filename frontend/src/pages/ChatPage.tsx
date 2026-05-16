@@ -23,6 +23,7 @@ export default function ChatPage() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebouncedValue(searchInput, 300);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   const conversationsQuery = useQuery({
     queryKey: ["conversations", debouncedSearch],
@@ -54,7 +55,10 @@ export default function ChatPage() {
   });
 
   const send = useMutation({
-    mutationFn: ({ id, content }: { id: string; content: string }) => sendMessage(id, content),
+    mutationFn: ({ id, content }: { id: string; content: string }) => {
+      abortRef.current = new AbortController();
+      return sendMessage(id, content, abortRef.current.signal);
+    },
     onSuccess: (resp) => {
       qc.setQueryData<Message[]>(["messages", resp.conversation.id], (prev) => [
         ...(prev ?? []),
@@ -62,6 +66,9 @@ export default function ChatPage() {
         resp.assistant_message,
       ]);
       qc.invalidateQueries({ queryKey: ["conversations"] });
+    },
+    onSettled: () => {
+      abortRef.current = null;
     },
   });
 
@@ -74,7 +81,10 @@ export default function ChatPage() {
   });
 
   const regenerate = useMutation({
-    mutationFn: (id: string) => regenerateLastResponse(id),
+    mutationFn: (id: string) => {
+      abortRef.current = new AbortController();
+      return regenerateLastResponse(id, abortRef.current.signal);
+    },
     onSuccess: (resp) => {
       qc.setQueryData<Message[]>(["messages", resp.conversation.id], (prev) => {
         const filtered = (prev ?? []).filter((m) => m.id !== resp.replaced_message_id);
@@ -82,7 +92,14 @@ export default function ChatPage() {
       });
       qc.invalidateQueries({ queryKey: ["conversations"] });
     },
+    onSettled: () => {
+      abortRef.current = null;
+    },
   });
+
+  const handleStop = () => {
+    abortRef.current?.abort();
+  };
 
   const handleSend = async (content: string) => {
     let id = activeId;
@@ -203,7 +220,12 @@ export default function ChatPage() {
           <div ref={endRef} />
         </div>
 
-        <MessageInput onSend={handleSend} disabled={send.isPending || newConv.isPending} />
+        <MessageInput
+          onSend={handleSend}
+          disabled={newConv.isPending}
+          isGenerating={send.isPending || regenerate.isPending}
+          onStop={handleStop}
+        />
       </main>
     </div>
   );

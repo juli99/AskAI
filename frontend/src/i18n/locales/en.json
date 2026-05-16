@@ -65,7 +65,8 @@
     "regenerating": "Regenerating…",
     "searchPlaceholder": "Search conversations…",
     "clearSearch": "Clear search",
-    "noSearchResults": "No results found"
+    "noSearchResults": "No results found",
+    "stop": "Stop"
   },
   "errors": {
     "loginFailed": "Sign in failed",

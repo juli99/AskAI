@@ -65,7 +65,8 @@
     "regenerating": "מייצר…",
     "searchPlaceholder": "חיפוש בשיחות…",
     "clearSearch": "נקה חיפוש",
-    "noSearchResults": "לא נמצאו תוצאות"
+    "noSearchResults": "לא נמצאו תוצאות",
+    "stop": "עצור"
   },
   "errors": {
     "loginFailed": "ההתחברות נכשלה",
