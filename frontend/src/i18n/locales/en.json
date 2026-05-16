@@ -62,7 +62,10 @@
     "copy": "Copy",
     "copied": "Copied!",
     "regenerate": "Regenerate",
-    "regenerating": "Regenerating…"
+    "regenerating": "Regenerating…",
+    "searchPlaceholder": "Search conversations…",
+    "clearSearch": "Clear search",
+    "noSearchResults": "No results found"
   },
   "errors": {
     "loginFailed": "Sign in failed",

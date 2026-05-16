@@ -62,7 +62,10 @@
     "copy": "העתק",
     "copied": "הועתק!",
     "regenerate": "צור תשובה חדשה",
-    "regenerating": "מייצר…"
+    "regenerating": "מייצר…",
+    "searchPlaceholder": "חיפוש בשיחות…",
+    "clearSearch": "נקה חיפוש",
+    "noSearchResults": "לא נמצאו תוצאות"
   },
   "errors": {
     "loginFailed": "ההתחברות נכשלה",

@@ -11,6 +11,7 @@ import {
 } from "../api/chat";
 import MessageBubble from "../components/MessageBubble";
 import MessageInput from "../components/MessageInput";
+import { useDebouncedValue } from "../hooks/useDebouncedValue";
 import { useAuth } from "../store/auth";
 import type { Conversation, Message } from "../types";
 
@@ -19,11 +20,13 @@ export default function ChatPage() {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedSearch = useDebouncedValue(searchInput, 300);
   const endRef = useRef<HTMLDivElement | null>(null);
 
   const conversationsQuery = useQuery({
-    queryKey: ["conversations"],
-    queryFn: listConversations,
+    queryKey: ["conversations", debouncedSearch],
+    queryFn: () => listConversations(debouncedSearch),
   });
 
   const messagesQuery = useQuery({
@@ -45,7 +48,7 @@ export default function ChatPage() {
   const newConv = useMutation({
     mutationFn: createConversation,
     onSuccess: (conv: Conversation) => {
-      qc.setQueryData<Conversation[]>(["conversations"], (prev) => [conv, ...(prev ?? [])]);
+      qc.invalidateQueries({ queryKey: ["conversations"] });
       setActiveId(conv.id);
     },
   });
@@ -58,19 +61,14 @@ export default function ChatPage() {
         resp.user_message,
         resp.assistant_message,
       ]);
-      qc.setQueryData<Conversation[]>(["conversations"], (prev) => {
-        const others = (prev ?? []).filter((c) => c.id !== resp.conversation.id);
-        return [resp.conversation, ...others];
-      });
+      qc.invalidateQueries({ queryKey: ["conversations"] });
     },
   });
 
   const removeConv = useMutation({
     mutationFn: (id: string) => deleteConversation(id),
     onSuccess: (_, id) => {
-      qc.setQueryData<Conversation[]>(["conversations"], (prev) =>
-        (prev ?? []).filter((c) => c.id !== id)
-      );
+      qc.invalidateQueries({ queryKey: ["conversations"] });
       if (activeId === id) setActiveId(null);
     },
   });
@@ -82,10 +80,7 @@ export default function ChatPage() {
         const filtered = (prev ?? []).filter((m) => m.id !== resp.replaced_message_id);
         return [...filtered, resp.assistant_message];
       });
-      qc.setQueryData<Conversation[]>(["conversations"], (prev) => {
-        const others = (prev ?? []).filter((c) => c.id !== resp.conversation.id);
-        return [resp.conversation, ...others];
-      });
+      qc.invalidateQueries({ queryKey: ["conversations"] });
     },
   });
 
@@ -103,13 +98,35 @@ export default function ChatPage() {
   return (
     <div className="flex h-full">
       <aside className="flex w-64 flex-col border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 ltr:border-r rtl:border-l">
-        <div className="border-b border-slate-200 p-4 dark:border-slate-700">
+        <div className="space-y-2 border-b border-slate-200 p-4 dark:border-slate-700">
           <button
             onClick={() => newConv.mutate()}
             className="w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
             {t("chat.newConversationButton")}
           </button>
+          <div className="relative">
+            <input
+              type="search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder={t("chat.searchPlaceholder")}
+              aria-label={t("chat.searchPlaceholder")}
+              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
+            />
+            {searchInput && (
+              <button
+                type="button"
+                onClick={() => setSearchInput("")}
+                aria-label={t("chat.clearSearch")}
+                className="absolute top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 ltr:right-2 rtl:left-2"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
         <div className="flex-1 overflow-y-auto">
           {conversationsQuery.data?.map((c) => (
@@ -138,7 +155,7 @@ export default function ChatPage() {
           ))}
           {conversationsQuery.data?.length === 0 && (
             <div className="p-4 text-center text-xs text-slate-400 dark:text-slate-500">
-              {t("chat.noConversations")}
+              {debouncedSearch ? t("chat.noSearchResults") : t("chat.noConversations")}
             </div>
           )}
         </div>

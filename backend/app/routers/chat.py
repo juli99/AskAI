@@ -1,8 +1,9 @@
+import re
 from datetime import datetime, timezone
 
 from bson import ObjectId
 from bson.errors import InvalidId
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from app.config import settings
@@ -34,9 +35,35 @@ async def _load_conversation(
 
 @router.get("/conversations", response_model=list[ConversationPublic])
 async def list_conversations(
-    user: dict = Depends(get_current_user), db: AsyncIOMotorDatabase = Depends(get_db)
+    q: str | None = Query(default=None, max_length=200),
+    user: dict = Depends(get_current_user),
+    db: AsyncIOMotorDatabase = Depends(get_db),
 ) -> list[ConversationPublic]:
-    cursor = db.conversations.find({"user_id": user["_id"]}).sort("updated_at", -1)
+    base_filter: dict = {"user_id": user["_id"]}
+    query = (q or "").strip()
+
+    if query:
+        pattern = re.escape(query)
+        user_conv_ids = [
+            doc["_id"] async for doc in db.conversations.find(base_filter, {"_id": 1})
+        ]
+        msg_cursor = db.messages.find(
+            {
+                "conversation_id": {"$in": user_conv_ids},
+                "content": {"$regex": pattern, "$options": "i"},
+            },
+            {"conversation_id": 1},
+        )
+        matched_conv_ids = {doc["conversation_id"] async for doc in msg_cursor}
+        base_filter = {
+            "user_id": user["_id"],
+            "$or": [
+                {"title": {"$regex": pattern, "$options": "i"}},
+                {"_id": {"$in": list(matched_conv_ids)}},
+            ],
+        }
+
+    cursor = db.conversations.find(base_filter).sort("updated_at", -1)
     return [ConversationPublic.from_db(doc) async for doc in cursor]
 
 

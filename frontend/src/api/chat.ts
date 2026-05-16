@@ -1,8 +1,9 @@
 import { api } from "./client";
 import type { Conversation, Message, RegenerateResponse, SendMessageResponse } from "../types";
 
-export async function listConversations(): Promise<Conversation[]> {
-  const { data } = await api.get<Conversation[]>("/chat/conversations");
+export async function listConversations(query?: string): Promise<Conversation[]> {
+  const params = query?.trim() ? { q: query.trim() } : undefined;
+  const { data } = await api.get<Conversation[]>("/chat/conversations", { params });
   return data;
 }
 
