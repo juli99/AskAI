@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import AccessibilityMenu from "./AccessibilityMenu";
 import Clock from "./Clock";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeToggle from "./ThemeToggle";
@@ -17,6 +18,7 @@ export default function Header({ rightExtras }: Props) {
       <div className="flex items-center gap-2">
         {rightExtras}
         <Clock />
+        <AccessibilityMenu />
         <ThemeToggle />
         <LanguageSwitcher />
       </div>

@@ -15,6 +15,18 @@
   "clock": {
     "label": "השעה הנוכחית בישראל"
   },
+  "a11y": {
+    "label": "אפשרויות נגישות",
+    "fontSize": "גודל טקסט",
+    "fontSizeOptions": {
+      "normal": "רגיל",
+      "large": "גדול",
+      "xlarge": "גדול מאוד"
+    },
+    "highContrast": "ניגודיות גבוהה",
+    "underlineLinks": "קו תחתון לקישורים",
+    "reset": "איפוס הגדרות נגישות"
+  },
   "auth": {
     "login": {
       "title": "התחברות ל-AskAI",

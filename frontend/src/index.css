@@ -18,3 +18,27 @@ html.dark body {
   background: #0b1220;
   color: #e2e8f0;
 }
+
+/* Accessibility: font scale (root font-size scales rem-based UI) */
+html.a11y-font-normal  { font-size: 16px; }
+html.a11y-font-large   { font-size: 18px; }
+html.a11y-font-xlarge  { font-size: 20px; }
+
+/* Accessibility: high contrast overrides */
+html.a11y-high-contrast body {
+  background: #ffffff;
+  color: #000000;
+}
+html.a11y-high-contrast.dark body {
+  background: #000000;
+  color: #ffffff;
+}
+html.a11y-high-contrast a,
+html.a11y-high-contrast button:not([disabled]) {
+  outline: 1px solid currentColor;
+}
+
+/* Accessibility: underline every link */
+html.a11y-underline-links a {
+  text-decoration: underline !important;
+}

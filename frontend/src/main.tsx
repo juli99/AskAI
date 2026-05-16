@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import App from "./App";
 import { AuthProvider } from "./store/auth";
 import { ThemeProvider } from "./store/theme";
+import { AccessibilityProvider } from "./store/accessibility";
 import "./i18n";
 import "./index.css";
 
@@ -25,15 +26,17 @@ function GoogleProvider({ children }: { children: React.ReactNode }) {
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <GoogleProvider>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </GoogleProvider>
+      <AccessibilityProvider>
+        <GoogleProvider>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <AuthProvider>
+                <App />
+              </AuthProvider>
+            </BrowserRouter>
+          </QueryClientProvider>
+        </GoogleProvider>
+      </AccessibilityProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

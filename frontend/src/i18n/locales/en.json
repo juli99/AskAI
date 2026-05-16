@@ -15,6 +15,18 @@
   "clock": {
     "label": "Current time in Israel"
   },
+  "a11y": {
+    "label": "Accessibility options",
+    "fontSize": "Text size",
+    "fontSizeOptions": {
+      "normal": "Normal",
+      "large": "Large",
+      "xlarge": "Extra large"
+    },
+    "highContrast": "High contrast",
+    "underlineLinks": "Underline links",
+    "reset": "Reset accessibility settings"
+  },
   "auth": {
     "login": {
       "title": "Sign in to AskAI",
