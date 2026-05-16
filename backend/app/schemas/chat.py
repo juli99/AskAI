@@ -12,3 +12,9 @@ class SendMessageResponse(BaseModel):
     user_message: MessagePublic
     assistant_message: MessagePublic
     conversation: ConversationPublic
+
+
+class RegenerateResponse(BaseModel):
+    replaced_message_id: str
+    assistant_message: MessagePublic
+    conversation: ConversationPublic

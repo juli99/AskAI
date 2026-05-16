@@ -6,6 +6,7 @@ import {
   deleteConversation,
   listConversations,
   listMessages,
+  regenerateLastResponse,
   sendMessage,
 } from "../api/chat";
 import MessageBubble from "../components/MessageBubble";
@@ -71,6 +72,20 @@ export default function ChatPage() {
         (prev ?? []).filter((c) => c.id !== id)
       );
       if (activeId === id) setActiveId(null);
+    },
+  });
+
+  const regenerate = useMutation({
+    mutationFn: (id: string) => regenerateLastResponse(id),
+    onSuccess: (resp) => {
+      qc.setQueryData<Message[]>(["messages", resp.conversation.id], (prev) => {
+        const filtered = (prev ?? []).filter((m) => m.id !== resp.replaced_message_id);
+        return [...filtered, resp.assistant_message];
+      });
+      qc.setQueryData<Conversation[]>(["conversations"], (prev) => {
+        const others = (prev ?? []).filter((c) => c.id !== resp.conversation.id);
+        return [resp.conversation, ...others];
+      });
     },
   });
 
@@ -148,7 +163,23 @@ export default function ChatPage() {
             <div className="text-center text-slate-400 dark:text-slate-500">{t("chat.loading")}</div>
           )}
           {activeId &&
-            messagesQuery.data?.map((m) => <MessageBubble key={m.id} message={m} />)}
+            messagesQuery.data?.map((m, idx, arr) => {
+              const lastAssistantIdx = arr.map((x) => x.role).lastIndexOf("assistant");
+              const canRegenerate =
+                m.role === "assistant" &&
+                idx === lastAssistantIdx &&
+                !send.isPending &&
+                !regenerate.isPending;
+              return (
+                <MessageBubble
+                  key={m.id}
+                  message={m}
+                  canRegenerate={canRegenerate}
+                  onRegenerate={() => regenerate.mutate(activeId)}
+                  regenerating={regenerate.isPending}
+                />
+              );
+            })}
           {send.isPending && (
             <div className="text-sm text-slate-400 dark:text-slate-500">{t("chat.aiThinking")}</div>
           )}

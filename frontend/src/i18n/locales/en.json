@@ -58,7 +58,11 @@
     "loading": "Loading…",
     "aiThinking": "AI is thinking…",
     "inputPlaceholder": "Type a message… (Enter to send, Shift+Enter for new line)",
-    "send": "Send"
+    "send": "Send",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "regenerate": "Regenerate",
+    "regenerating": "Regenerating…"
   },
   "errors": {
     "loginFailed": "Sign in failed",

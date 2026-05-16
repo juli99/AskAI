@@ -58,7 +58,11 @@
     "loading": "טוען…",
     "aiThinking": "AI חושב…",
     "inputPlaceholder": "כתוב הודעה… (Enter לשליחה, Shift+Enter לשורה חדשה)",
-    "send": "שלח"
+    "send": "שלח",
+    "copy": "העתק",
+    "copied": "הועתק!",
+    "regenerate": "צור תשובה חדשה",
+    "regenerating": "מייצר…"
   },
   "errors": {
     "loginFailed": "ההתחברות נכשלה",

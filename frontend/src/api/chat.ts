@@ -1,5 +1,5 @@
 import { api } from "./client";
-import type { Conversation, Message, SendMessageResponse } from "../types";
+import type { Conversation, Message, RegenerateResponse, SendMessageResponse } from "../types";
 
 export async function listConversations(): Promise<Conversation[]> {
   const { data } = await api.get<Conversation[]>("/chat/conversations");
@@ -26,4 +26,11 @@ export async function sendMessage(conversationId: string, content: string): Prom
 
 export async function deleteConversation(conversationId: string): Promise<void> {
   await api.delete(`/chat/conversations/${conversationId}`);
+}
+
+export async function regenerateLastResponse(conversationId: string): Promise<RegenerateResponse> {
+  const { data } = await api.post<RegenerateResponse>(
+    `/chat/conversations/${conversationId}/regenerate`
+  );
+  return data;
 }

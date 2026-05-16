@@ -10,7 +10,7 @@ from app.db import get_db
 from app.deps import get_current_user
 from app.models.conversation import ConversationPublic
 from app.models.message import MessagePublic
-from app.schemas.chat import SendMessageRequest, SendMessageResponse
+from app.schemas.chat import RegenerateResponse, SendMessageRequest, SendMessageResponse
 from app.services.ai_service import ChatMessage, get_ai_provider
 
 router = APIRouter(prefix="/chat", tags=["chat"])
@@ -122,6 +122,70 @@ async def send_message(
     return SendMessageResponse(
         user_message=MessagePublic.from_db(user_doc),
         assistant_message=MessagePublic.from_db(assistant_doc),
+        conversation=ConversationPublic.from_db(conv),
+    )
+
+
+@router.post(
+    "/conversations/{conversation_id}/regenerate",
+    response_model=RegenerateResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+async def regenerate_last_response(
+    conversation_id: str,
+    user: dict = Depends(get_current_user),
+    db: AsyncIOMotorDatabase = Depends(get_db),
+) -> RegenerateResponse:
+    conv = await _load_conversation(db, conversation_id, user["_id"])
+
+    last_assistant = await db.messages.find_one(
+        {"conversation_id": conv["_id"], "role": "assistant"},
+        sort=[("created_at", -1)],
+    )
+    if not last_assistant:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No assistant message to regenerate",
+        )
+
+    await db.messages.delete_one({"_id": last_assistant["_id"]})
+
+    history_cursor = db.messages.find({"conversation_id": conv["_id"]}).sort("created_at", 1)
+    history: list[ChatMessage] = [
+        {"role": doc["role"], "content": doc["content"]} async for doc in history_cursor
+    ]
+
+    if not history or history[-1]["role"] != "user":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No user message to regenerate from",
+        )
+
+    provider = get_ai_provider()
+    try:
+        reply_text = await provider.generate(history)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY, detail=f"AI provider error: {exc}"
+        ) from exc
+
+    now = datetime.now(timezone.utc)
+    new_assistant = {
+        "conversation_id": conv["_id"],
+        "role": "assistant",
+        "content": reply_text,
+        "model": settings.gemini_model,
+        "created_at": now,
+    }
+    result = await db.messages.insert_one(new_assistant)
+    new_assistant["_id"] = result.inserted_id
+
+    await db.conversations.update_one({"_id": conv["_id"]}, {"$set": {"updated_at": now}})
+    conv["updated_at"] = now
+
+    return RegenerateResponse(
+        replaced_message_id=str(last_assistant["_id"]),
+        assistant_message=MessagePublic.from_db(new_assistant),
         conversation=ConversationPublic.from_db(conv),
     )
 

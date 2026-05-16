@@ -30,3 +30,9 @@ export type SendMessageResponse = {
   assistant_message: Message;
   conversation: Conversation;
 };
+
+export type RegenerateResponse = {
+  replaced_message_id: string;
+  assistant_message: Message;
+  conversation: Conversation;
+};
