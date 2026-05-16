@@ -12,6 +12,9 @@
     "switchToDark": "Switch to dark mode",
     "switchToLight": "Switch to light mode"
   },
+  "clock": {
+    "label": "Current time in Israel"
+  },
   "auth": {
     "login": {
       "title": "Sign in to AskAI",
